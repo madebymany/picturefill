@@ -5,7 +5,7 @@
 	// Enable strict mode
 	"use strict";
 
-	w.picturefill = function() {
+	w.picturefill = _.debounce(function() {
 		var ps = w.document.getElementsByTagName( "span" );
 
 		// Loop the pictures
@@ -18,7 +18,7 @@
 				// See if which sources match
 				for( var j = 0, jl = sources.length; j < jl; j++ ){
 					var media = sources[ j ].getAttribute( "data-media" );
-					// if there's no media specified, OR w.matchMedia is supported 
+					// if there's no media specified, OR w.matchMedia is supported
 					if( !media || ( w.matchMedia && w.matchMedia( media ).matches ) ){
 						matches.push( sources[ j ] );
 					}
@@ -30,8 +30,10 @@
 			if( matches.length ){
 				var matchedEl = matches.pop();
 				if( !picImg || picImg.parentNode.nodeName === "NOSCRIPT" ){
-					picImg = w.document.createElement( "img" );
-					picImg.alt = ps[ i ].getAttribute( "data-alt" );
+					picImg				= w.document.createElement( "img" );
+					picImg.alt    = ps[ i ].getAttribute( "data-alt" );
+					picImg.width  = ps[ i ].getAttribute( "data-width" );
+					picImg.height = ps[ i ].getAttribute( "data-height" );
 				}
 
 				picImg.src =  matchedEl.getAttribute( "data-src" );
@@ -42,7 +44,7 @@
 			}
 		}
 		}
-	};
+	}, 400);
 
 	// Run on resize and domready (w.load as a fallback)
 	if( w.addEventListener ){
