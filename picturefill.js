@@ -44,7 +44,7 @@
 			}
 		}
 		}
-	}, 400);
+	}, 400, true);
 
 	// Run on resize and domready (w.load as a fallback)
 	if( w.addEventListener ){
